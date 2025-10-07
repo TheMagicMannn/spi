@@ -1,4 +1,5 @@
 // Simplified server/index.ts
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic, log } from "./vite";
@@ -50,6 +51,13 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 
 // Always serve static files in production
 serveStatic(app);
+
+// Start server
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  log(`🚀 Server running on port ${PORT}`);
+  log(`📊 Health check: http://localhost:${PORT}/api/health`);
+});
 
 // Export for Vercel
 export default async (req: Request, res: Response) => {
